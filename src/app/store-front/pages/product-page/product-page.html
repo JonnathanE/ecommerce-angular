@@ -1,0 +1,29 @@
+<!-- Loading -->
+@if( productResource.isLoading()) {
+<div class="flex justify-center items-center h-screen">
+  <span class="loading loading-spinner loading-lg"></span>
+</div>
+}
+<!-- Error -->
+@if (productResource.error()) {
+<div class="alert alert-error">
+  <p>The product could not be loaded. Please try again later.</p>
+  <div class="mt-4">
+    <a class="btn btn-outline" [routerLink]="['/']">← Back</a>
+  </div>
+</div>
+}
+<!-- Product -->
+@if( productResource.hasValue() ) {
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+  <app-product-carousel [images]="productResource.value().images"></app-product-carousel>
+  <div>
+    <h2 class="text-2xl font-bold font-montserrat">{{ productResource.value().title }}</h2>
+    <div class="divider"></div>
+    <p>
+      {{ productResource.value().description }}
+    </p>
+  </div>
+</div>
+
+}
