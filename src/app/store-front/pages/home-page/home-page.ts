@@ -3,6 +3,7 @@ import { ProductCard } from '@products/components/product-card/product-card';
 import { ProductsService } from '@products/services/products.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Pagination } from '@shared/components/pagination/pagination';
+import { PaginationService } from '@shared/components/pagination/pagination-service';
 
 @Component({
   selector: 'app-home-page',
@@ -11,12 +12,13 @@ import { Pagination } from '@shared/components/pagination/pagination';
 })
 export class HomePage {
   productsService = inject(ProductsService);
+  paginationService = inject(PaginationService);
 
   productsResource = rxResource({
-    params: () => ({}),
+    params: () => ({ page: this.paginationService.currentPage() }),
     stream: ({ params }) => {
       // if (!params.code) return of([]);
-      return this.productsService.getProducts({ limit: 9, offset: 0 });
+      return this.productsService.getProducts({ limit: 9, offset: (params.page - 1) * 9 });
     },
   });
 }
